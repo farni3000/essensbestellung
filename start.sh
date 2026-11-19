@@ -3,7 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 OPEN_BROWSER=1
-APP_PORT="${ESSENSBESTELLUNG_PORT:-3000}"
+APP_PORT="${ESSENSBESTELLUNG_PORT:-3001}"
 URL="http://127.0.0.1:${APP_PORT}"
 
 for arg in "$@"; do

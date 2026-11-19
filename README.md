@@ -35,8 +35,9 @@ npm install
 ./start.sh
 ```
 
-`start.sh` startet den Dev-Server auf <http://127.0.0.1:3000> und öffnet den
-Browser. Ohne Browser:
+`start.sh` startet den Dev-Server auf <http://127.0.0.1:3001> und öffnet den
+Browser. Port 3001 ist bewusst gewählt, damit die App parallel zu
+`rate-your-picture` (Port 3000) laufen kann. Ohne Browser:
 
 ```bash
 ./start.sh --no-browser
@@ -47,6 +48,19 @@ Anderer Port:
 ```bash
 ESSENSBESTELLUNG_PORT=3100 ./start.sh
 ```
+
+Aktuelle Standardports der Projekte (alle können parallel laufen):
+
+| Projekt | Port |
+| --- | --- |
+| rate-your-picture | 3000 |
+| **essensbestellung** | **3001** |
+| meta-meteo | 8000 |
+| sidequest (Backend) | 8001 |
+| sidequest (BRouter) | 17777 |
+| waste-my-time | 8765 |
+| tuerkmek | – (Telegram-Bot, Long Polling) |
+| analyze-your-music | – (Scheduler-Skript) |
 
 Alternativ direkt:
 
