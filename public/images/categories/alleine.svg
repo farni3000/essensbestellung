@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Eine gemütliche Portion Nudeln für eine Person mit Buch und Teetasse">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <radialGradient id="lamp-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FBEAC3" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#FBEAC3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="#FFF8EC"/>
+  <circle cx="400" cy="280" r="300" fill="#F8EDDC"/>
+  <circle cx="400" cy="245" r="215" fill="url(#lamp-glow)"/>
+
+  <!-- hanging lamp -->
+  <g>
+    <line x1="400" y1="0" x2="400" y2="118" stroke="#2B2118" stroke-width="5"/>
+    <path d="M344 118h112l22 58H322z" fill="#E8503A" stroke="#2B2118" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M322 176h156" stroke="#2B2118" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="400" cy="190" r="14" fill="#F0B429" stroke="#2B2118" stroke-width="5"/>
+  </g>
+
+  <!-- floor rug -->
+  <ellipse cx="400" cy="552" rx="312" ry="46" fill="#E9EDD3" stroke="#2B2118" stroke-width="5" opacity="0.85"/>
+
+  <!-- table -->
+  <g>
+    <rect x="112" y="392" width="576" height="30" rx="15" fill="#E8D4B2" stroke="#2B2118" stroke-width="8"/>
+    <rect x="158" y="422" width="24" height="116" rx="12" fill="#D8BE96" stroke="#2B2118" stroke-width="6"/>
+    <rect x="618" y="422" width="24" height="116" rx="12" fill="#D8BE96" stroke="#2B2118" stroke-width="6"/>
+  </g>
+
+  <!-- shadows on table -->
+  <ellipse cx="402" cy="392" rx="118" ry="16" fill="#2B2118" opacity="0.1"/>
+  <ellipse cx="600" cy="392" rx="58" ry="11" fill="#2B2118" opacity="0.1"/>
+  <ellipse cx="215" cy="392" rx="72" ry="11" fill="#2B2118" opacity="0.08"/>
+
+  <!-- bowl of noodles -->
+  <g>
+    <path d="M290 326c4 66 52 84 110 84s106-18 110-84z" fill="#FFFDF8" stroke="#2B2118" stroke-width="8" stroke-linejoin="round"/>
+    <ellipse cx="400" cy="326" rx="110" ry="26" fill="#FFFDF8" stroke="#2B2118" stroke-width="8"/>
+    <ellipse cx="400" cy="326" rx="92" ry="18" fill="#F0B429"/>
+    <path d="M330 326c22-14 42 10 66-2s40 10 68-2" fill="none" stroke="#C9870C" stroke-width="9" stroke-linecap="round"/>
+    <path d="M352 318c14 10 28-8 44 2s22-6 34 2" fill="none" stroke="#E8503A" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="365" cy="326" r="8" fill="#E8503A" stroke="#2B2118" stroke-width="2.5"/>
+    <circle cx="424" cy="331" r="7" fill="#6B7A3A" stroke="#2B2118" stroke-width="2.5"/>
+    <path d="M438 316c8-9 18-4 16 6-8 4-14 2-16-6z" fill="#6B7A3A" stroke="#2B2118" stroke-width="2.5"/>
+  </g>
+
+  <!-- steam -->
+  <g fill="none" stroke="#2B2118" stroke-width="4" stroke-linecap="round" opacity="0.4">
+    <path d="M360 292c-14-14 12-24-2-38s10-22 0-34"/>
+    <path d="M400 286c-14-16 12-26-2-42s10-24 0-38"/>
+    <path d="M440 292c-14-14 12-24-2-38s10-22 0-34"/>
+  </g>
+
+  <!-- open book -->
+  <g>
+    <path d="M140 356c26-14 54-14 76 0v40c-22-12-50-12-76 0z" fill="#FFFDF8" stroke="#2B2118" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M216 356c22-14 50-14 76 0v40c-26-12-54-12-76 0z" fill="#FFFDF8" stroke="#2B2118" stroke-width="5" stroke-linejoin="round"/>
+    <line x1="216" y1="356" x2="216" y2="396" stroke="#2B2118" stroke-width="4"/>
+    <path d="M162 370h34M162 381h28M238 370h34M238 381h28" stroke="#2B2118" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+    <path d="M277 352v-18l12 6v18z" fill="#E8503A"/>
+  </g>
+
+  <!-- mug -->
+  <g>
+    <rect x="570" y="318" width="62" height="66" rx="12" fill="#6B7A3A" stroke="#2B2118" stroke-width="6"/>
+    <path d="M632 335h14a14 14 0 0 1 0 28h-14" fill="none" stroke="#2B2118" stroke-width="6"/>
+    <ellipse cx="601" cy="320" rx="31" ry="8" fill="#7E8E49" stroke="#2B2118" stroke-width="5"/>
+    <path d="M584 300c-8-10 8-16 0-26M602 298c-8-10 8-16 0-26M620 300c-8-10 8-16 0-26" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" opacity="0.35"/>
+  </g>
+
+  <!-- little side plate with bread -->
+  <g>
+    <ellipse cx="530" cy="386" rx="48" ry="12" fill="#FFFDF8" stroke="#2B2118" stroke-width="4"/>
+    <path d="M508 380c0-18 14-26 28-20 12 5 16 14 12 22-12 6-28 6-40-2z" fill="#E0A412" stroke="#2B2118" stroke-width="4"/>
+    <line x1="516" y1="372" x2="536" y2="368" stroke="#C9870C" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- fork -->
+  <g stroke="#2B2118" stroke-width="5" stroke-linecap="round" fill="none">
+    <line x1="310" y1="358" x2="330" y2="392"/>
+    <path d="M302 350l16-10M310 360l16-10M318 370l14-8"/>
+  </g>
+
+  <!-- stars -->
+  <g fill="#E0A412" opacity="0.75">
+    <circle cx="128" cy="128" r="4"/>
+    <circle cx="686" cy="102" r="5"/>
+    <circle cx="658" cy="196" r="3"/>
+    <circle cx="144" cy="232" r="3"/>
+  </g>
+
+  <rect width="800" height="600" filter="url(#grain)" opacity="0.07" style="mix-blend-mode:multiply"/>
+</svg>

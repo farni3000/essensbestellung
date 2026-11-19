@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Ein runder Tisch mit drei Tellern und einer Schüssel in der Mitte">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="#FFF8EC"/>
+  <circle cx="400" cy="300" r="290" fill="#F8EDDC"/>
+
+  <!-- three chairs -->
+  <rect x="302" y="22" width="196" height="54" rx="27" fill="#6B7A3A" stroke="#2B2118" stroke-width="7"/>
+  <line x1="332" y1="49" x2="468" y2="49" stroke="#2B2118" stroke-width="3" opacity="0.28" stroke-linecap="round"/>
+  <rect x="88" y="452" width="192" height="54" rx="27" fill="#6B7A3A" stroke="#2B2118" stroke-width="7" transform="rotate(-24 184 479)"/>
+  <line x1="118" y1="479" x2="250" y2="479" stroke="#2B2118" stroke-width="3" opacity="0.28" stroke-linecap="round" transform="rotate(-24 184 479)"/>
+  <rect x="520" y="452" width="192" height="54" rx="27" fill="#6B7A3A" stroke="#2B2118" stroke-width="7" transform="rotate(24 616 479)"/>
+  <line x1="550" y1="479" x2="682" y2="479" stroke="#2B2118" stroke-width="3" opacity="0.28" stroke-linecap="round" transform="rotate(24 616 479)"/>
+
+  <!-- round table -->
+  <circle cx="400" cy="300" r="242" fill="#E8D4B2" stroke="#2B2118" stroke-width="9"/>
+  <circle cx="400" cy="300" r="216" fill="#F3E7D3" stroke="#2B2118" stroke-width="3" opacity="0.22" stroke-dasharray="14 13"/>
+
+  <!-- sharing bowl in the middle -->
+  <g>
+    <circle cx="400" cy="300" r="73" fill="#FFFDF8" stroke="#2B2118" stroke-width="6"/>
+    <circle cx="400" cy="300" r="58" fill="#E9EDD3"/>
+    <path d="M358 296c12-18 30 12 46-2s28 14 40-2" fill="none" stroke="#6B7A3A" stroke-width="12" stroke-linecap="round"/>
+    <path d="M362 315c16 12 32-10 50 2s22-6 34 2" fill="none" stroke="#7E8E49" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="382" cy="286" r="7" fill="#E8503A"/>
+    <circle cx="420" cy="310" r="6" fill="#E8503A"/>
+    <circle cx="408" cy="282" r="5" fill="#E0A412"/>
+  </g>
+
+  <!-- top plate: pasta -->
+  <g>
+    <circle cx="400" cy="152" r="80" fill="#FFFDF8" stroke="#2B2118" stroke-width="6"/>
+    <circle cx="400" cy="152" r="64" fill="none" stroke="#2B2118" stroke-width="3" opacity="0.16"/>
+    <circle cx="400" cy="152" r="53" fill="#F0B429"/>
+    <path d="M360 143c14-16 28 12 44-2s26 12 38-2" fill="none" stroke="#E8503A" stroke-width="10" stroke-linecap="round"/>
+    <path d="M362 164c16 12 30-10 46 2s22-8 34 2" fill="none" stroke="#C9870C" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="384" cy="136" r="8" fill="#7A4A2A" stroke="#2B2118" stroke-width="2.5"/>
+    <circle cx="418" cy="164" r="7" fill="#7A4A2A" stroke="#2B2118" stroke-width="2.5"/>
+    <path d="M414 130c8-9 18-4 16 6-8 4-14 2-16-6z" fill="#6B7A3A" stroke="#2B2118" stroke-width="2.5"/>
+  </g>
+
+  <!-- bottom left plate: curry -->
+  <g>
+    <circle cx="254" cy="414" r="80" fill="#FFFDF8" stroke="#2B2118" stroke-width="6"/>
+    <circle cx="254" cy="414" r="64" fill="none" stroke="#2B2118" stroke-width="3" opacity="0.16"/>
+    <circle cx="254" cy="414" r="53" fill="#EFE3C8"/>
+    <path d="M214 410c12-14 26 10 42-2s24 12 38-2" fill="none" stroke="#E0A412" stroke-width="13" stroke-linecap="round"/>
+    <path d="M218 428c14 10 28-8 44 2s20-6 32 2" fill="none" stroke="#C9870C" stroke-width="9" stroke-linecap="round"/>
+    <path d="M224 392c10-10 22 8 34-2" fill="none" stroke="#6B7A3A" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="274" cy="402" r="7" fill="#E8503A" stroke="#2B2118" stroke-width="2.5"/>
+  </g>
+
+  <!-- bottom right plate: salad -->
+  <g>
+    <circle cx="546" cy="414" r="80" fill="#FFFDF8" stroke="#2B2118" stroke-width="6"/>
+    <circle cx="546" cy="414" r="64" fill="none" stroke="#2B2118" stroke-width="3" opacity="0.16"/>
+    <circle cx="546" cy="414" r="53" fill="#E9EDD3"/>
+    <path d="M505 410c12-16 28 12 44-2s26 14 38-2" fill="none" stroke="#6B7A3A" stroke-width="13" stroke-linecap="round"/>
+    <path d="M508 430c16 10 30-10 46 2s20-6 32 2" fill="none" stroke="#7E8E49" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="532" cy="398" r="8" fill="#E8503A" stroke="#2B2118" stroke-width="2.5"/>
+    <circle cx="566" cy="424" r="7" fill="#E8503A" stroke="#2B2118" stroke-width="2.5"/>
+    <path d="M560 392c8-9 18-4 16 6-8 4-14 2-16-6z" fill="#6B7A3A" stroke="#2B2118" stroke-width="2.5"/>
+  </g>
+
+  <!-- cutlery -->
+  <g stroke="#2B2118" stroke-width="5" stroke-linecap="round" fill="none">
+    <g transform="translate(306 92) rotate(-28)">
+      <line x1="0" y1="0" x2="0" y2="76"/>
+      <path d="M-10 -10v18a6 6 0 0 0 6 6h8a6 6 0 0 0 6-6v-18"/>
+    </g>
+    <g transform="translate(496 92) rotate(28)">
+      <line x1="0" y1="0" x2="0" y2="76"/>
+      <path d="M-8 -10v18a6 6 0 0 0 6 6h6a6 6 0 0 0 6-6v-18" transform="scale(-1 1)"/>
+    </g>
+    <g transform="translate(168 378) rotate(28)">
+      <line x1="0" y1="0" x2="0" y2="70"/>
+      <path d="M-9 -10v16a6 6 0 0 0 6 6h6a6 6 0 0 0 6-6v-16"/>
+    </g>
+    <g transform="translate(632 378) rotate(-28)">
+      <line x1="0" y1="0" x2="0" y2="70"/>
+      <path d="M-9 -10v16a6 6 0 0 0 6 6h6a6 6 0 0 0 6-6v-16"/>
+    </g>
+  </g>
+
+  <!-- glasses -->
+  <g>
+    <rect x="145" y="206" width="34" height="60" rx="10" fill="#FFFDF8" stroke="#2B2118" stroke-width="4" transform="rotate(-18 162 236)"/>
+    <path d="M150 234h28v18a8 8 0 0 1-8 8h-12a8 8 0 0 1-8-8z" fill="#BBD3C5" transform="rotate(-18 162 236)"/>
+    <rect x="621" y="206" width="34" height="60" rx="10" fill="#FFFDF8" stroke="#2B2118" stroke-width="4" transform="rotate(18 638 236)"/>
+    <path d="M626 234h28v18a8 8 0 0 1-8 8h-12a8 8 0 0 1-8-8z" fill="#BBD3C5" transform="rotate(18 638 236)"/>
+    <rect x="383" y="505" width="34" height="56" rx="10" fill="#FFFDF8" stroke="#2B2118" stroke-width="4"/>
+    <path d="M385 531h30v14a8 8 0 0 1-8 8h-14a8 8 0 0 1-8-8z" fill="#BBD3C5"/>
+  </g>
+
+  <rect width="800" height="600" filter="url(#grain)" opacity="0.07" style="mix-blend-mode:multiply"/>
+</svg>
