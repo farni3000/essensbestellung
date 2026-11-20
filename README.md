@@ -32,21 +32,21 @@ Voraussetzungen: Node.js 20+ (getestet mit Node 24) und npm.
 
 ```bash
 npm install
-./start.sh
+./run.sh
 ```
 
-`start.sh` startet den Dev-Server auf <http://127.0.0.1:3001> und öffnet den
+`run.sh` startet den Dev-Server auf <http://127.0.0.1:3001> und öffnet den
 Browser. Port 3001 ist bewusst gewählt, damit die App parallel zu
 `rate-your-picture` (Port 3000) laufen kann. Ohne Browser:
 
 ```bash
-./start.sh --no-browser
+./run.sh --no-browser
 ```
 
 Anderer Port:
 
 ```bash
-ESSENSBESTELLUNG_PORT=3100 ./start.sh
+ESSENSBESTELLUNG_PORT=3100 ./run.sh
 ```
 
 Aktuelle Standardports der Projekte (alle können parallel laufen):
@@ -119,7 +119,7 @@ Backup den Server stoppen und die Datei (bei laufendem WAL-Modus zusammen mit
 Ein anderer Speicherort lässt sich über `ESSENSBESTELLUNG_DB` setzen:
 
 ```bash
-ESSENSBESTELLUNG_DB=/pfad/zur/datei.db ./start.sh
+ESSENSBESTELLUNG_DB=/pfad/zur/datei.db ./run.sh
 ```
 
 ## Entwicklung

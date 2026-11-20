@@ -28,7 +28,7 @@ npm run build
 npm run start
 npm run lint
 npm test
-./start.sh [--no-browser]     # Port über ESSENSBESTELLUNG_PORT
+./run.sh [--no-browser]     # Port über ESSENSBESTELLUNG_PORT
 ```
 
 ## Struktur
