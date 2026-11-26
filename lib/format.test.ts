@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { formatIngredientsForWhatsApp, formatLastCooked } from "./format";
 
 const DAY = 86_400_000;
+const HEADER = "🍽️ Essensbestellung! 🛒";
 const NOW = new Date("2026-05-01T12:00:00.000Z").getTime();
 
 function daysAgo(days: number): string {
@@ -9,10 +10,10 @@ function daysAgo(days: number): string {
 }
 
 describe("formatIngredientsForWhatsApp", () => {
-  it("turns every ingredient into a WhatsApp bullet line", () => {
+  it("prepends the header and turns every ingredient into a bullet line", () => {
     expect(
       formatIngredientsForWhatsApp(["4 Möhren", "1 Zwiebel", "200 ml Sahne"]),
-    ).toBe("* 4 Möhren\n* 1 Zwiebel\n* 200 ml Sahne");
+    ).toBe(`${HEADER}\n* 4 Möhren\n* 1 Zwiebel\n* 200 ml Sahne`);
   });
 
   it("returns an empty string without ingredients", () => {

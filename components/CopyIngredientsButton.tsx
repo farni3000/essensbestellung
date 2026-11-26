@@ -111,7 +111,7 @@ export function CopyIngredientsButton({
               ref={textareaRef}
               readOnly
               value={formatted}
-              rows={Math.min(12, Math.max(4, ingredients.length + 1))}
+              rows={Math.min(12, Math.max(4, ingredients.length + 2))}
               className="field mt-4 font-mono text-sm"
               onFocus={(event) => event.currentTarget.select()}
             />

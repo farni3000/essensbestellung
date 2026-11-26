@@ -17,6 +17,7 @@ kopieren und per gewichtetem Zufall entscheiden, was als Nächstes gekocht wird.
   live anpassen: Normal startet bei 4, Zu dritt bei 3 und Alleine bei 1 Person.
 - **Zutaten für WhatsApp kopieren** – erzeugt genau dieses Format:
   ```
+  🍽️ Essensbestellung! 🛒
   * 4 Möhren
   * 1 Zwiebel
   * 200 ml Sahne

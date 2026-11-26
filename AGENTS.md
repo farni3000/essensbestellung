@@ -87,8 +87,8 @@ ergänzt die bekannten Bestandsrezepte um Mengen. Danach werden Mengen nur noch
 - Die Rezeptbasis (`servings`) ist die Personenzahl, für die die gespeicherten
   Mengen gelten. Vorschlag und Kategorie-Karten starten mit dem
   Kategorie-Standard, die Detailansicht mit der Rezeptbasis.
-- WhatsApp-Copy ist exakt `* <Zutat>` pro Zeile und nutzt die aktuell gewählte
-  Personenzahl.
+- WhatsApp-Copy beginnt mit `🍽️ Essensbestellung! 🛒`, darunter exakt
+  `* <Zutat>` pro Zeile, und nutzt die aktuell gewählte Personenzahl.
 - Links werden mit `https://` ergänzt und nur für `http`/`https` akzeptiert.
 - Mindestens eine Kategorie und eine Zutat sind Pflicht; die Personenzahl muss
   eine ganze Zahl zwischen 1 und 20 sein.

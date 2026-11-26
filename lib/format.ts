@@ -35,6 +35,12 @@ export function formatLastCooked(
   }).format(cooked)} gekocht`;
 }
 
+export const WHATSAPP_HEADER = "🍽️ Essensbestellung! 🛒";
+
 export function formatIngredientsForWhatsApp(ingredients: string[]): string {
-  return ingredients.map((ingredient) => `* ${ingredient}`).join("\n");
+  if (ingredients.length === 0) return "";
+
+  return [WHATSAPP_HEADER, ...ingredients.map((ingredient) => `* ${ingredient}`)].join(
+    "\n",
+  );
 }
