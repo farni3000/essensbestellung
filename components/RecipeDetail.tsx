@@ -17,17 +17,29 @@ import {
 import { Brand } from "@/components/Brand";
 import { CopyIngredientsButton } from "@/components/CopyIngredientsButton";
 import { RecipeForm } from "@/components/RecipeForm";
+import { ServingsStepper } from "@/components/ServingsStepper";
 import { Toast } from "@/components/Toast";
 import { deleteRecipeAction, markCookedAction, undoCookAction } from "@/lib/actions";
 import { getCategory } from "@/lib/categories";
 import { celebrate } from "@/lib/celebrate";
 import { formatLastCooked } from "@/lib/format";
+import {
+  formatIngredients,
+  formatServingsLabel,
+} from "@/lib/ingredients";
 import type { Recipe } from "@/lib/types";
+
+type ServingChoice = {
+  recipeId: string;
+  base: number;
+  value: number;
+};
 
 export function RecipeDetail({ recipe }: { recipe: Recipe }) {
   const router = useRouter();
   const [override, setOverride] = useState<Recipe | null>(null);
   const [editing, setEditing] = useState(false);
+  const [servingChoice, setServingChoice] = useState<ServingChoice | null>(null);
   const [cookPending, setCookPending] = useState(false);
   const [deletePending, setDeletePending] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -36,6 +48,27 @@ export function RecipeDetail({ recipe }: { recipe: Recipe }) {
   // Optimistic result of the last cook action, until the refreshed props
   // (or an explicit reset after editing) take over again.
   const current = override ?? recipe;
+
+  const servings =
+    servingChoice &&
+    servingChoice.recipeId === current.id &&
+    servingChoice.base === current.servings
+      ? servingChoice.value
+      : current.servings;
+
+  function handleServingsChange(value: number) {
+    setServingChoice({
+      recipeId: current.id,
+      base: current.servings,
+      value,
+    });
+  }
+
+  const formattedIngredients = formatIngredients(
+    current.ingredients,
+    servings,
+    current.servings,
+  );
 
   const primarySlug = current.categories[0];
   const primaryCategory = primarySlug ? getCategory(primarySlug) : undefined;
@@ -168,7 +201,7 @@ export function RecipeDetail({ recipe }: { recipe: Recipe }) {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <CopyIngredientsButton ingredients={current.ingredients} />
+                  <CopyIngredientsButton ingredients={formattedIngredients} />
                   <button
                     type="button"
                     onClick={() => setEditing(true)}
@@ -184,15 +217,27 @@ export function RecipeDetail({ recipe }: { recipe: Recipe }) {
 
           <div className="mt-5 grid items-start gap-5 lg:grid-cols-[1.55fr_1fr]">
             <section className="card-hard p-5 sm:p-7">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="font-display text-2xl font-extrabold">Zutaten</h2>
-                <span className="chip">
-                  {current.ingredients.length}{" "}
-                  {current.ingredients.length === 1 ? "Zutat" : "Zutaten"}
-                </span>
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="font-display text-2xl font-extrabold">Zutaten</h2>
+                  <span className="chip">
+                    {current.ingredients.length}{" "}
+                    {current.ingredients.length === 1 ? "Zutat" : "Zutaten"}
+                  </span>
+                </div>
+                <ServingsStepper
+                  value={servings}
+                  base={current.servings}
+                  onChange={handleServingsChange}
+                />
               </div>
+              <p className="mt-1.5 text-xs font-bold text-ink-soft">
+                {servings === current.servings
+                  ? `Mengen für ${formatServingsLabel(servings)}`
+                  : `Skaliert von ${formatServingsLabel(current.servings)} auf ${formatServingsLabel(servings)}`}
+              </p>
               <ul className="mt-3 divide-y divide-ink/10">
-                {current.ingredients.map((ingredient, index) => (
+                {formattedIngredients.map((ingredient, index) => (
                   <li
                     key={`${ingredient}-${index}`}
                     className="flex items-baseline gap-3 py-2.5 text-[15px]"

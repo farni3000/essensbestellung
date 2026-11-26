@@ -225,6 +225,7 @@ export function CategoryView({
               <RecipeCard
                 key={recipe.id}
                 recipe={recipe}
+                servings={category.defaultServings}
                 onQuickCook={handleQuickCook}
                 quickCookPending={quickCookId === recipe.id}
               />

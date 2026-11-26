@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   ArrowUpRight,
@@ -13,9 +13,14 @@ import {
   X,
 } from "lucide-react";
 import { CopyIngredientsButton } from "@/components/CopyIngredientsButton";
+import { ServingsStepper } from "@/components/ServingsStepper";
 import type { Category } from "@/lib/categories";
 import { getCategory } from "@/lib/categories";
 import { formatLastCooked } from "@/lib/format";
+import {
+  formatIngredients,
+  formatServingsLabel,
+} from "@/lib/ingredients";
 import type { Recipe } from "@/lib/types";
 
 export function SuggestionModal({
@@ -41,6 +46,33 @@ export function SuggestionModal({
 }) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
+  const [servingChoice, setServingChoice] = useState<{
+    context: string;
+    base: number;
+    value: number;
+  } | null>(null);
+
+  const servingsContext = `${recipe.id}:${category.slug}:${category.defaultServings}`;
+  const servings =
+    servingChoice &&
+    servingChoice.context === servingsContext &&
+    servingChoice.base === recipe.servings
+      ? servingChoice.value
+      : category.defaultServings;
+
+  function handleServingsChange(value: number) {
+    setServingChoice({
+      context: servingsContext,
+      base: recipe.servings,
+      value,
+    });
+  }
+
+  const formattedIngredients = formatIngredients(
+    recipe.ingredients,
+    servings,
+    recipe.servings,
+  );
 
   useEffect(() => {
     onCloseRef.current = onClose;
@@ -137,13 +169,26 @@ export function SuggestionModal({
                 Zutaten
               </h3>
               <CopyIngredientsButton
-                ingredients={recipe.ingredients}
+                ingredients={formattedIngredients}
                 className="btn btn-secondary px-3 py-2 text-xs"
                 label="Für WhatsApp kopieren"
               />
             </div>
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+              <ServingsStepper
+                value={servings}
+                base={recipe.servings}
+                resetTo={category.defaultServings}
+                onChange={handleServingsChange}
+              />
+              <span className="text-[11px] font-bold text-ink-soft">
+                {servings === recipe.servings
+                  ? `Mengen für ${formatServingsLabel(servings)}`
+                  : `Basis ${formatServingsLabel(recipe.servings)}`}
+              </span>
+            </div>
             <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
-              {recipe.ingredients.map((ingredient, index) => (
+              {formattedIngredients.map((ingredient, index) => (
                 <li
                   key={`${ingredient}-${index}`}
                   className="flex gap-2 text-sm leading-snug"

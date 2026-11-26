@@ -5,16 +5,47 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, Loader2, Plus, Save, Trash2, X } from "lucide-react";
 import { saveRecipeAction } from "@/lib/actions";
-import { CATEGORIES } from "@/lib/categories";
+import { CATEGORIES, getCategory } from "@/lib/categories";
 import type { CategorySlug } from "@/lib/categories";
 import type { Recipe } from "@/lib/types";
 
-type IngredientRow = { key: string; value: string };
+type IngredientRow = {
+  key: string;
+  amount: string;
+  unit: string;
+  name: string;
+};
+
+const UNIT_OPTIONS = [
+  "g",
+  "kg",
+  "ml",
+  "l",
+  "EL",
+  "TL",
+  "Stück",
+  "Dose",
+  "Becher",
+  "Packung",
+  "Glas",
+  "Tube",
+  "Bund",
+  "Zehe",
+  "Prise",
+];
 
 function createKey(): string {
   return typeof crypto !== "undefined" && "randomUUID" in crypto
     ? crypto.randomUUID()
     : `row-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function emptyRow(): IngredientRow {
+  return { key: createKey(), amount: "", unit: "", name: "" };
+}
+
+function amountToInput(amount: number | null): string {
+  return amount === null ? "" : String(amount).replace(".", ",");
 }
 
 export function RecipeForm({
@@ -40,46 +71,81 @@ export function RecipeForm({
     if (defaultCategory) return [defaultCategory];
     return [];
   });
-  const [rows, setRows] = useState<IngredientRow[]>(() => {
-    const values =
-      initial && initial.ingredients.length > 0
-        ? initial.ingredients
-        : ["", "", ""];
-    return values.map((value) => ({ key: createKey(), value }));
+  const [servingsText, setServingsText] = useState(() => {
+    if (initial) return String(initial.servings);
+    if (defaultCategory) {
+      return String(getCategory(defaultCategory)?.defaultServings ?? 4);
+    }
+    return "4";
   });
-  const [focusKey, setFocusKey] = useState<string | null>(null);
+  const [servingsTouched, setServingsTouched] = useState(mode === "edit");
+  const [rows, setRows] = useState<IngredientRow[]>(() => {
+    if (initial && initial.ingredients.length > 0) {
+      return initial.ingredients.map((ingredient, index) => ({
+        key: `initial-${index}`,
+        amount: amountToInput(ingredient.amount),
+        unit: ingredient.unit,
+        name: ingredient.name,
+      }));
+    }
+    return Array.from({ length: 3 }, (_, index) => ({
+      key: `initial-${index}`,
+      amount: "",
+      unit: "",
+      name: "",
+    }));
+  });
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   function toggleCategory(slug: CategorySlug) {
-    setCategories((previous) =>
-      previous.includes(slug)
-        ? previous.filter((entry) => entry !== slug)
-        : [...previous, slug],
-    );
+    const next = categories.includes(slug)
+      ? categories.filter((entry) => entry !== slug)
+      : [...categories, slug];
+
+    setCategories(next);
+
+    if (!servingsTouched && next.length > 0) {
+      const primary = CATEGORIES.find((category) =>
+        next.includes(category.slug),
+      );
+      if (primary) setServingsText(String(primary.defaultServings));
+    }
   }
 
   function addRow(at?: number) {
-    const key = createKey();
+    const row = emptyRow();
     setRows((previous) => {
       const next = [...previous];
-      next.splice(at ?? next.length, 0, { key, value: "" });
+      next.splice(at ?? next.length, 0, row);
       return next;
     });
-    setFocusKey(key);
+    requestAnimationFrame(() => {
+      document.getElementById(`ingredient-${row.key}-amount`)?.focus();
+    });
   }
 
   function removeRow(key: string) {
     setRows((previous) => {
-      if (previous.length === 1) return [{ key: createKey(), value: "" }];
+      if (previous.length === 1) return [emptyRow()];
       return previous.filter((row) => row.key !== key);
     });
   }
 
-  function updateRow(key: string, value: string) {
+  function updateRow(
+    key: string,
+    field: "amount" | "unit" | "name",
+    value: string,
+  ) {
     setRows((previous) =>
-      previous.map((row) => (row.key === key ? { ...row, value } : row)),
+      previous.map((row) => (row.key === key ? { ...row, [field]: value } : row)),
     );
+  }
+
+  function focusField(key: string, field: "amount" | "unit" | "name") {
+    requestAnimationFrame(() => {
+      document.getElementById(`ingredient-${key}-${field}`)?.focus();
+    });
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -91,13 +157,24 @@ export function RecipeForm({
       return;
     }
 
+    const ingredients = rows
+      .filter(
+        (row) => row.amount.trim() || row.unit.trim() || row.name.trim(),
+      )
+      .map((row) => ({
+        amount: row.amount,
+        unit: row.unit,
+        name: row.name,
+      }));
+
     setPending(true);
     const result = await saveRecipeAction(initial?.id ?? null, {
       name,
       link,
       notes,
       categories,
-      ingredients: rows.map((row) => row.value),
+      servings: servingsText,
+      ingredients,
     });
     setPending(false);
 
@@ -169,13 +246,56 @@ export function RecipeForm({
           <div>
             <h2 className="font-display text-2xl font-extrabold">Zutaten</h2>
             <p className="text-sm text-ink-soft">
-              Menge einfach direkt in die Zeile schreiben.
+              Menge und Einheit getrennt eintragen. Leer lassen, wenn es keine
+              sinnvolle Menge gibt.
             </p>
           </div>
           <span className="text-xs font-bold text-ink-soft">
-            Enter fügt eine Zeile hinzu
+            Enter springt zum nächsten Feld
           </span>
         </div>
+
+        <div className="mt-4 flex flex-wrap items-end gap-3 rounded-2xl border-2 border-ink/10 bg-cream/50 p-4">
+          <div>
+            <label htmlFor="recipe-servings" className="label">
+              Zutaten für
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                id="recipe-servings"
+                type="number"
+                min={1}
+                max={20}
+                step={1}
+                value={servingsText}
+                onChange={(event) => {
+                  setServingsTouched(true);
+                  setServingsText(event.target.value);
+                }}
+                className="field w-24 px-3 py-2.5 text-center text-lg font-bold"
+              />
+              <span className="text-sm font-bold text-ink-soft">
+                {servingsText === "1" ? "Person" : "Personen"}
+              </span>
+            </div>
+          </div>
+          <p className="max-w-xs text-xs font-medium text-ink-soft">
+            Standard: Normal 4, Zu dritt 3, Alleine 1. Die Mengen werden später
+            passend zur Personenzahl skaliert.
+          </p>
+        </div>
+
+        <div className="mt-4 hidden gap-2 px-1 text-[11px] font-extrabold uppercase tracking-[0.1em] text-ink-soft sm:flex">
+          <span className="w-20">Menge</span>
+          <span className="w-24">Einheit</span>
+          <span className="flex-1">Zutat</span>
+        </div>
+
+        <datalist id="ingredient-units">
+          {UNIT_OPTIONS.map((unit) => (
+            <option key={unit} value={unit} />
+          ))}
+        </datalist>
 
         <div className="mt-4 space-y-2.5">
           {rows.map((row, index) => (
@@ -187,20 +307,56 @@ export function RecipeForm({
                 {index + 1}
               </span>
               <input
-                value={row.value}
-                onChange={(event) => updateRow(row.key, event.target.value)}
+                id={`ingredient-${row.key}-amount`}
+                value={row.amount}
+                onChange={(event) =>
+                  updateRow(row.key, "amount", event.target.value)
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    focusField(row.key, "unit");
+                  }
+                }}
+                placeholder={["4", "1", "200"][index % 3]}
+                aria-label={`Menge für Zutat ${index + 1}`}
+                className="field w-20 shrink-0 px-2 py-2.5 text-center font-bold"
+                inputMode="decimal"
+                maxLength={12}
+              />
+              <input
+                id={`ingredient-${row.key}-unit`}
+                value={row.unit}
+                onChange={(event) =>
+                  updateRow(row.key, "unit", event.target.value)
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    focusField(row.key, "name");
+                  }
+                }}
+                placeholder="Einheit"
+                aria-label={`Einheit für Zutat ${index + 1}`}
+                className="field w-24 shrink-0 px-2 py-2.5 text-center"
+                list="ingredient-units"
+                maxLength={30}
+              />
+              <input
+                id={`ingredient-${row.key}-name`}
+                value={row.name}
+                onChange={(event) =>
+                  updateRow(row.key, "name", event.target.value)
+                }
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
                     event.preventDefault();
                     addRow(index + 1);
                   }
                 }}
-                placeholder={
-                  ["z. B. 4 Möhren", "1 Zwiebel", "200 ml Sahne"][index % 3]
-                }
+                placeholder={["Möhren", "Zwiebel", "Sahne"][index % 3]}
                 aria-label={`Zutat ${index + 1}`}
-                className="field"
-                autoFocus={focusKey === row.key}
+                className="field min-w-[8rem] flex-1 px-3 py-2.5"
                 maxLength={200}
               />
               <button

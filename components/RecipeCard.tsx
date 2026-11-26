@@ -1,21 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Check, Clock, Link2, Loader2 } from "lucide-react";
+import {
+  ArrowUpRight,
+  Check,
+  Clock,
+  Link2,
+  Loader2,
+  Users,
+} from "lucide-react";
 import { getCategory } from "@/lib/categories";
 import { formatLastCooked } from "@/lib/format";
+import { formatIngredients, formatServingsLabel } from "@/lib/ingredients";
 import type { Recipe } from "@/lib/types";
 
 export function RecipeCard({
   recipe,
+  servings = recipe.servings,
   onQuickCook,
   quickCookPending,
 }: {
   recipe: Recipe;
+  servings?: number;
   onQuickCook: (id: string) => void;
   quickCookPending: boolean;
 }) {
-  const extraIngredients = Math.max(0, recipe.ingredients.length - 3);
+  const formattedIngredients = formatIngredients(
+    recipe.ingredients,
+    servings,
+    recipe.servings,
+  );
+  const extraIngredients = Math.max(0, formattedIngredients.length - 3);
 
   return (
     <article className="flex flex-col overflow-hidden rounded-[1.6rem] border-2 border-ink bg-card shadow-[4px_4px_0_0_#2b2118] transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#2b2118]">
@@ -50,7 +65,7 @@ export function RecipeCard({
         </div>
 
         <ul className="mt-3 space-y-1 text-sm leading-snug text-ink-soft">
-          {recipe.ingredients.slice(0, 3).map((ingredient, index) => (
+          {formattedIngredients.slice(0, 3).map((ingredient, index) => (
             <li key={`${ingredient}-${index}`} className="flex gap-2">
               <span aria-hidden="true" className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-tomato" />
               <span className="min-w-0 truncate">{ingredient}</span>
@@ -64,6 +79,10 @@ export function RecipeCard({
         ) : null}
 
         <div className="mt-auto flex flex-wrap items-center gap-2 pt-4 text-[11px] font-bold text-ink-soft">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-cream-deep/60 px-2.5 py-1">
+            <Users className="h-3.5 w-3.5" strokeWidth={2.4} />
+            {formatServingsLabel(servings)}
+          </span>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-cream-deep/60 px-2.5 py-1">
             <Clock className="h-3.5 w-3.5" strokeWidth={2.4} />
             {formatLastCooked(recipe.lastCookedAt)}

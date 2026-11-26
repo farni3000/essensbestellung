@@ -9,14 +9,19 @@ kopieren und per gewichtetem Zufall entscheiden, was als Nächstes gekocht wird.
   Rezeptliste. Ein Rezept kann in mehreren Kategorien liegen.
 - **Rezepte anlegen und bearbeiten** – Name, Zutatenliste, optionaler Link zum
   Originalrezept (z. B. Chefkoch) und optionaler Freitext zur Zubereitung.
-- **Mengen direkt in der Zutat** – „4 Möhren“ ist einfach eine Zeile, keine
-  getrennte Mengenspalte.
+- **Mengen mit Einheit** – jede Zutat hat Menge, Einheit und Namen. Zutaten
+  ohne sinnvolle Menge (z. B. Preiselbeermarmelade) bleiben einfach ohne Menge
+  stehen.
+- **Portionen skalieren** – Rezepte speichern, für wie viele Personen ihre
+  Mengen gedacht sind. Über den Personen-Stepper lässt sich die Zutatenliste
+  live anpassen: Normal startet bei 4, Zu dritt bei 3 und Alleine bei 1 Person.
 - **Zutaten für WhatsApp kopieren** – erzeugt genau dieses Format:
   ```
   * 4 Möhren
   * 1 Zwiebel
   * 200 ml Sahne
   ```
+  Die Mengen entsprechen dabei der aktuell gewählten Personenzahl.
 - **Gewichteter Vorschlag** – lange nicht gekochte Rezepte kommen zuerst. Das
   zuletzt gekochte Rezept wird beim nächsten Vorschlag hart ausgeschlossen,
   solange es Alternativen gibt.
@@ -78,8 +83,10 @@ npm run dev
    anderer Vorschlag, mit **Doch nicht gekocht** wird die Markierung
    zurückgenommen.
 4. Über **Neues Rezept** ein Rezept anlegen. Die Kategorie ist dabei schon
-   vorausgewählt.
+   vorausgewählt; die Personenzahl für die Zutaten lässt sich separat einstellen.
 5. Im Rezept **Zutaten kopieren** drücken und die Liste in WhatsApp einfügen.
+   Mit dem Personen-Stepper bei den Zutaten kann man die Mengen vorher
+   skalieren.
 
 Der Kopieren-Button nutzt zuerst die moderne Clipboard-API. Wenn der Browser sie
 blockiert (z. B. bei Aufruf über eine lokale IP ohne HTTPS), öffnet sich ein
@@ -99,6 +106,24 @@ Die Auswahl ist bewusst nicht gleichverteilt:
 Jeder Kochvorgang wird als eigenes Event gespeichert. „Zuletzt gekocht“ ist
 einfach das jüngste Event; „Doch nicht gekocht“ löscht das jüngste Event.
 
+## Mengen und Portionen
+
+Jede Zutat besteht aus Menge, Einheit und Namen. Rezepte speichern zusätzlich
+eine Basis-Personenzahl:
+
+- Normal-Rezepte starten mit 4 Personen.
+- Zu-dritt-Rezepte starten mit 3 Personen.
+- Alleine-Rezepte starten mit 1 Person.
+
+Die Personenzahl lässt sich beim Anlegen und Bearbeiten ändern. In der
+Rezeptansicht und im Vorschlags-Dialog skaliert der Stepper die Mengen live;
+der WhatsApp-Export verwendet die eingestellte Portion. Gewichte und
+Flüssigkeiten werden sinnvoll gerundet, Zählbares und Packungseinheiten in
+Vierteln dargestellt (z. B. „¼ Becher Sahne“).
+
+Bleibt die Menge leer, wird die Zutat nicht skaliert. Das ist für Dinge wie
+Preiselbeermarmelade, Salz oder „etwas Petersilie“ gedacht.
+
 ## Datenbank
 
 Die SQLite-Datei wird beim ersten Zugriff automatisch angelegt:
@@ -111,9 +136,9 @@ Sie ist in `.gitignore` eingetragen und gehört nicht ins Repository. Für ein
 Backup den Server stoppen und die Datei (bei laufendem WAL-Modus zusammen mit
 `-wal` und `-shm`) kopieren. Tabellen:
 
-- `recipes` – Name, Link, Zubereitung, Erstellzeitpunkt
+- `recipes` – Name, Link, Zubereitung, Basis-Personenzahl, Erstellzeitpunkt
 - `recipe_categories` – Rezept ↔ Kategorie
-- `ingredients` – Zutatenzeilen mit Position
+- `ingredients` – Zutaten mit Position, Menge, Einheit und Namen
 - `cook_events` – jeder Kochvorgang mit Zeitstempel
 
 Ein anderer Speicherort lässt sich über `ESSENSBESTELLUNG_DB` setzen:
@@ -129,7 +154,7 @@ npm run dev     # Dev-Server
 npm run build   # Produktions-Build
 npm run start   # Produktions-Server
 npm run lint    # ESLint
-npm test        # Vitest (Gewichtung, Validierung, Datenbank, Formatierung)
+npm test        # Vitest (Gewichtung, Validierung, Datenbank, Formatierung, Mengen)
 ```
 
 Technik: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4,
